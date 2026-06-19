@@ -4,25 +4,23 @@ import '../models/student.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  // Fungsi helper untuk menampilkan Dialog Konfirmasi Hapus (Modal Pertanyaan)
-  // Konsepnya mirip dialog window.confirm() di JavaScript
   void _showDeleteConfirmation(BuildContext context, String name) {
     showDialog(
       context: context,
-      barrierDismissible: false, // Mengharuskan pengguna untuk memilih opsi
+      barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('Hapus Mahasiswa', style: TextStyle(fontWeight: FontWeight.bold)),
           content: Text('Apakah Anda yakin ingin menghapus data $name dari daftar?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(dialogContext), // Menutup modal dialog (Batal)
+              onPressed: () => Navigator.pop(dialogContext), 
               child: const Text('Batal', style: TextStyle(color: Colors.grey)),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(dialogContext); // Menutup dialog konfirmasi
-                Navigator.pop(context, 'delete'); // Mengembalikan hasil 'delete' ke Halaman Home
+                Navigator.pop(dialogContext);
+                Navigator.pop(context, 'delete');
               },
               child: const Text('Hapus', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
             ),
@@ -34,7 +32,6 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Membaca arguments yang dikirim dari Home Page (seperti props di JS)
     final arguments = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
     if (arguments == null) {
@@ -47,11 +44,10 @@ class ProfilePage extends StatelessWidget {
     final student = arguments['student'] as Student;
     final totalStudents = arguments['totalStudents'] as int;
 
-    // Tombol hapus dinonaktifkan jika jumlah mahasiswa saat ini <= 3 (syarat UTS)
     final bool isDeleteDisabled = totalStudents <= 3;
 
     return Scaffold(
-      backgroundColor: Colors.white, // Latar belakang putih bersih
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Profil', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
@@ -64,7 +60,6 @@ class ProfilePage extends StatelessWidget {
           children: [
             const SizedBox(height: 16),
             
-            // Foto Profil Lingkaran dengan border tipis
             Center(
               child: Container(
                 padding: const EdgeInsets.all(3),
@@ -81,7 +76,6 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Nama Lengkap Mahasiswa
             Text(
               student.name,
               style: const TextStyle(
@@ -93,7 +87,6 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 4),
 
-            // Subtitle Domisili
             Text(
               'Mahasiswa dari ${student.domisili}',
               style: TextStyle(
@@ -104,7 +97,6 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
 
-            // DETAIL INFORMASI (TAMPILAN LIST DATAR / FLAT DENGAN DIVIDER)
             const Divider(height: 1),
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -128,13 +120,12 @@ class ProfilePage extends StatelessWidget {
             const Divider(height: 1),
             const SizedBox(height: 48),
 
-            // TOMBOL HAPUS AKUN INI (OUTLINE MERAH FLAT)
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: isDeleteDisabled
                     ? null
-                    : () => _showDeleteConfirmation(context, student.name), // Panggil modal pertanyaan
+                    : () => _showDeleteConfirmation(context, student.name),
                 icon: const Icon(Icons.delete_outline),
                 label: const Text(
                   'Hapus Akun Ini',
@@ -155,7 +146,6 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // Keterangan jika tombol hapus dinonaktifkan
             if (isDeleteDisabled)
               Text(
                 'Tidak bisa menghapus karena batas minimal adalah 3 mahasiswa.',

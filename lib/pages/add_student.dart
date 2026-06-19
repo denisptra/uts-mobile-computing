@@ -11,14 +11,11 @@ class AddStudentPage extends StatefulWidget {
 }
 
 class _AddStudentPageState extends State<AddStudentPage> {
-  // Key untuk form validasi
   final _formKey = GlobalKey<FormState>();
 
-  // Controller input (seperti mengambil value dari selector input di JS)
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  // State untuk form
   late String _selectedAvatar;
   String _selectedDomisili = domisiliList[0];
   bool _isConsentChecked = false;
@@ -26,7 +23,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
   @override
   void initState() {
     super.initState();
-    // Memilih avatar acak secara otomatis ketika form dibuka (syarat UTS)
     _selectedAvatar = avatarList[Random().nextInt(avatarList.length)];
   }
 
@@ -37,7 +33,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
     super.dispose();
   }
 
-  // Aksi simpan data mahasiswa baru
   void _submitData() {
     if (_formKey.currentState!.validate()) {
       final newStudent = Student(
@@ -46,17 +41,16 @@ class _AddStudentPageState extends State<AddStudentPage> {
         domisili: _selectedDomisili,
         phone: _phoneController.text.trim(),
       );
-      Navigator.pop(context, newStudent); // Kembalikan data baru ke Halaman Home
+      Navigator.pop(context, newStudent);
     }
   }
 
-  // Fungsi helper dekorasi input agar kode ringkas & seragam
   InputDecoration _inputDecoration(String labelText, IconData icon) {
     return InputDecoration(
       labelText: labelText,
       prefixIcon: Icon(icon, color: Colors.grey[500]),
       filled: true,
-      fillColor: Colors.grey[50], // Background abu-abu tipis
+      fillColor: Colors.grey[50],
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -77,7 +71,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Latar belakang putih bersih agar serasi
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Tambah Mahasiswa', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
@@ -92,8 +86,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-
-              // PREVIEW AVATAR DENGAN BORDER TIPIS (Sama seperti Halaman Profil)
               Center(
                 child: Container(
                   padding: const EdgeInsets.all(3),
@@ -110,7 +102,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
               ),
               const SizedBox(height: 32),
 
-              // INPUT NAMA
               TextFormField(
                 controller: _nameController,
                 decoration: _inputDecoration('Nama Lengkap *', Icons.person_outline),
@@ -123,7 +114,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
               ),
               const SizedBox(height: 20),
 
-              // INPUT DOMISILI (DROPDOWN)
               DropdownButtonFormField<String>(
                 value: _selectedDomisili,
                 decoration: _inputDecoration('Kota Asal / Domisili', Icons.location_on_outlined),
@@ -141,10 +131,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
               ),
               const SizedBox(height: 20),
 
-              // INPUT NOMOR HP (KEYBOARD ANGKA)
               TextFormField(
                 controller: _phoneController,
-                keyboardType: TextInputType.number, // Memunculkan keyboard angka saja (syarat UTS)
+                keyboardType: TextInputType.number,
                 decoration: _inputDecoration('Nomor HP *', Icons.phone_outlined),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -158,7 +147,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
               ),
               const SizedBox(height: 24),
 
-              // CHECKBOX PERSETUJUAN (CONSENT)
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -181,11 +169,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
               ),
               const SizedBox(height: 32),
 
-              // TOMBOL SIMPAN (FLAT INDIGO)
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _isConsentChecked ? _submitData : null, // Disabled jika belum dicentang
+                  onPressed: _isConsentChecked ? _submitData : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.indigo,
                     disabledBackgroundColor: Colors.grey[100],
@@ -193,7 +180,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    elevation: 0, // Flat tanpa bayangan tebal
+                    elevation: 0,
                   ),
                   child: Text(
                     'Simpan Mahasiswa',
